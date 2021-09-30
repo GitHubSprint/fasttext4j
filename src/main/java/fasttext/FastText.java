@@ -10,12 +10,14 @@ import fasttext.store.InputStreamFastTextInput;
 import fasttext.store.MMapFile;
 import fasttext.store.OutputStreamFastTextOutput;
 import org.apache.commons.cli.*;
-import org.apache.log4j.Logger;
+
 
 import java.io.*;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.util.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Java FastText implementation.
@@ -46,8 +48,8 @@ public class FastText {
 
   public static int FASTTEXT_VERSION = 12; /* Version 1b */
   public static int FASTTEXT_FILEFORMAT_MAGIC_INT = 793712314;
-
-  private final static Logger logger = Logger.getLogger(FastText.class.getName());
+  
+  private static final Logger logger = LoggerFactory.getLogger(FastText.class);
 
   private final Args args;
   private final int version;
