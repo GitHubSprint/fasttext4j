@@ -6,8 +6,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 import org.slf4j.Logger;
@@ -31,7 +29,9 @@ public class Test {
         FastText ftmodel = FastText.loadModel(filePath);
         
         
-        File testFile = new File("D:\\Vectra\\Bot\\mailbot\\vectra-email-test-1.txt");
+        
+        
+        File testFile = new File("D:\\Vectra\\Bot\\mailbot\\out\\vectra-email-body-model-2022-03-01.txt");
         
         List<String> testLines = Files.readAllLines(testFile.toPath(), StandardCharsets.UTF_8);
         
@@ -41,11 +41,7 @@ public class Test {
         {
             int endLabel = line.indexOf(" ");
             String testLabel = line.substring(0, endLabel);
-            
-            if(testLabel.startsWith("__label__EM_WIN"))
-                continue;
-            if(testLabel.startsWith("__label__EM_Windykacja"))
-                continue;
+                        
             
             String testLine = line.substring(endLabel); 
           
@@ -54,17 +50,18 @@ public class Test {
             
             List<FastTextPrediction> result = ftmodel.predictAll(Arrays.asList(testLine.split(" ")),FTHRESHOLD);
                                    
-            for(int i=0; i<3;i++)
+            //for(int i=0; i<3;i++)
             {            
                 //logger.info(result.get(i).label() + " " + result.get(i).probability());
                 
-                int iScore = (int) (result.get(i).probability() * 100); 
+                int iScore = (int) (result.get(0).probability() * 100); 
                 
-                if(iScore > 10)
+                if(iScore > 50)
                 {
-                    System.out.println("\t" + testLabel + "\t" + testLine);
+                    System.out.println(testLabel + "\t" + testLine);
                     
-                    System.out.println(iScore + "  " + result.get(i).label()  + " " + result.get(0).probability());
+                    System.out.println(result.get(0).label()  + " " + result.get(0).probability());
+                    System.out.println("");
                     
                     m++;
                 }
@@ -76,7 +73,7 @@ public class Test {
         }
         
         System.out.println("Max found: " + m);
-        System.out.println("Lines: " + l);
+        System.out.println("Lines: " + testLines.size());
         
 //        List<FastTextPrediction> result = ftmodel.predictAll(Arrays.asList("Poraz kolejny zgłaszam brak internetu. Proszę nie odpisywać żeby zresetować modem bo to nic nie daje. Proszę o przysłanie techników albo wymianę modemu. Na 30 dni w miesiącu wychodzi na to że 10 dni nie mam internetu.".split(" ")),FTHRESHOLD);
 //        System.out.println(result.get(0).label() + " " + result.get(0).probability());      
